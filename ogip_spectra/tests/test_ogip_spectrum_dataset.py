@@ -29,3 +29,10 @@ def test_create(simple_geom):
 
     assert dataset.grouping.geom.region == None
     assert_allclose(dataset.grouping.data, 1)
+
+def test_read():
+    dataset = StandardOGIPDataset.read(filename="$OGIP_DATA/xmm/PN_PWN.grp")
+
+    assert dataset.counts.data.sum() == 3316
+    assert dataset.counts_off.data.sum() == 2879
+    assert np.all(dataset._apply_grouping(dataset.counts.data)[:30]>=25)

@@ -1,10 +1,13 @@
 # Licensed under a 3-clause BSD style license - see LICENSE.rst
+import numpy as np
 from gammapy.datasets import SpectrumDatasetOnOff
 
 class StandardOGIPDataset(SpectrumDatasetOnOff):
     """Dataset containing spectral data as defined by X-ray OGIP compliant files.
 
     A few elements are added that are not supported by the current SpectrumDataset in gammapy.
+
+    grouping contains the information on the grouping scheme, namely the group number of each bin.
 
     Parameters
     ----------
@@ -49,3 +52,30 @@ class StandardOGIPDataset(SpectrumDatasetOnOff):
     ):
         self.grouping = kwargs.pop("grouping",None)
         super().__init__(*args, **kwargs)
+
+    @classmethod
+    def read(cls, filename):
+        """Read from file
+
+        For now, filename is assumed to the name of a PHA file where BKG file, ARF, and RMF names
+        must be set in the PHA header and be present in the same folder.
+
+        For formats specs see `OGIPDatasetReader.read`
+
+        Parameters
+        ----------
+        filename : `~pathlib.Path` or str
+            OGIP PHA file to read
+        """
+        from .io import StandardOGIPDatasetReader
+
+        reader = StandardOGIPDatasetReader(filename=filename)
+        return reader.read()
+
+    def write(self, filename, overwrite=False, format="ogip"):
+        raise NotImplementedError("Standard OGIP writing is not supported.")
+
+    def _apply_grouping(self, array, ufunc=np.add):
+        """Apply stored grouping to input array."""
+        indices = np.where(self.grouping.data==1)[0]
+        return ufunc.reduceat(array, indices)
