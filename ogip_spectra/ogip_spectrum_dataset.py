@@ -31,8 +31,8 @@ class StandardOGIPDataset(SpectrumDatasetOnOff):
         Energy dispersion
     mask_safe : `~gammapy.maps.WcsNDMap`
         Mask defining the safe data range.
-    grouping : `~gammapy.maps.WcsNDMap`
-        Map defining the grouping scheme.
+    grouping_axis : `~gammapy.maps.MapAxis`
+        MapAxis defining the grouping scheme.
     gti : `~gammapy.data.GTI`
         GTI of the observation or union of GTI if it is a stacked observation
     meta_table : `~astropy.table.Table`
@@ -50,8 +50,35 @@ class StandardOGIPDataset(SpectrumDatasetOnOff):
         *args,
         **kwargs
     ):
-        self.grouping = kwargs.pop("grouping",None)
+        axis = kwargs.pop("grouping_axis",None)
         super().__init__(*args, **kwargs)
+        self._grouped_dataset = None
+        self.grouping_axis = axis
+
+    @property
+    def grouping_axis(self):
+        """Energy axis providing energy grouping for stat calculations."""
+        return self._grouping_axis
+
+    @grouping_axis.setter
+    def grouping_axis(self, axis):
+        """Energy axis providing energy grouping for stat calculations."""
+        self._grouping_axis = axis
+        if axis is not None:
+            self._apply_grouping()
+
+    def _apply_grouping(self):
+        """Apply grouping."""
+        self._grouped_dataset = self.resample_energy_axis(self.grouping_axis, name=f"group_{self.name}")
+
+    @property
+    def grouped(self):
+        """Return grouped dataset."""
+        return self._grouped_dataset
+
+    def stat_sum(self):
+        """Total statistic given the current model parameters."""
+        return self.grouped.stat_sum()
 
     @classmethod
     def read(cls, filename):
@@ -75,7 +102,3 @@ class StandardOGIPDataset(SpectrumDatasetOnOff):
     def write(self, filename, overwrite=False, format="ogip"):
         raise NotImplementedError("Standard OGIP writing is not supported.")
 
-    def _apply_grouping(self, array, ufunc=np.add):
-        """Apply stored grouping to input array."""
-        indices = np.where(self.grouping.data==1)[0]
-        return ufunc.reduceat(array, indices)

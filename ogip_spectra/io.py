@@ -252,8 +252,9 @@ class StandardOGIPDatasetReader:
 
         edisp = EDispKernelMap.from_edisp_kernel(edisp_kernel, geom=exposure.geom)
 
-        grouping = data["grouping"]
-        grouping = RegionNDMap(geom=geom, data=grouping, unit="")
+        index = np.where(data["grouping"] == 1)[0]
+        edges = np.append(energy_axis.edges[index], energy_axis.edges[-1])
+        grouping_axis = MapAxis.from_energy_edges(edges, interp=energy_axis._interp)
 
         dataset = StandardOGIPDataset(
             name="test",
@@ -264,7 +265,7 @@ class StandardOGIPDatasetReader:
             edisp=edisp,
             exposure=exposure,
             mask_safe=mask_safe,
-            grouping=grouping,
+            grouping_axis=grouping_axis,
             gti=gti,
             meta_table=pha_table.meta
         )
