@@ -7,7 +7,7 @@ from regions import FITSRegionParser
 from gammapy.utils.scripts import make_path
 from gammapy.maps import RegionNDMap, MapAxis, RegionGeom, WcsGeom
 from gammapy.irf import EDispKernel, EDispKernelMap
-from ogip_spectra.ogip_spectrum_dataset import StandardOGIPDataset
+from ogip_spectrum_dataset import StandardOGIPDataset
 from gammapy.data import GTI
 
 @classmethod
@@ -170,7 +170,6 @@ class StandardOGIPDatasetReader:
         The resulting dataset is rebinned according to the GROUPING
         column.
         """
-        
         spectrum_data = {}
         pha_meta = pha_table.meta
         
@@ -236,7 +235,6 @@ class StandardOGIPDatasetReader:
         bkg_table = Table.read(filenames["bkgfile"])
         data_bkg = self.extract_spectrum(bkg_table)
 
-            
         geom = RegionGeom(region=region, wcs=wcs, axes=[energy_axis])
             
         counts = RegionNDMap(geom=geom, data=data["counts"].data, unit='')
