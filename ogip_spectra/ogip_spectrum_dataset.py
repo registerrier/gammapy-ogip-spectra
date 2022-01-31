@@ -1,5 +1,5 @@
 # Licensed under a 3-clause BSD style license - see LICENSE.rst
-import logging
+import numpy as np
 from gammapy.datasets import SpectrumDatasetOnOff
 
 
@@ -52,19 +52,22 @@ class StandardOGIPDataset(SpectrumDatasetOnOff):
         axis = kwargs.pop("grouping_axis", None)
         super().__init__(*args, **kwargs)
         self.grouping_axis = axis
-        self._apply_grouping()
+        self.apply_grouping(self.grouping_axis)
 
     @property
     def grouped(self):
         """Return grouped SpectrumDatasetOnOff."""
         return self._grouped
 
-    def _apply_grouping(self):
+    @property
+    def _is_grouped(self):
+        return self.grouped is not None
+
+    def apply_grouping(self, axis=None):
         """Apply grouping."""
-        axis = self.grouping_axis
         if axis is None:
-            raise NotImplementedError(
-                "The input data must provide grouping information."
+            raise ValueError(
+                "A grouping MapAxis must be provided."
             )
         else:
             dataset = self.to_spectrum_dataset()
@@ -80,8 +83,22 @@ class StandardOGIPDataset(SpectrumDatasetOnOff):
     @models.setter
     def models(self, models):
         """Models setter"""
-        if self.grouped is not None:
+        if self._is_grouped:
             SpectrumDatasetOnOff.models.fset(self.grouped, models)
+
+    @property
+    def mask_fit(self):
+        """RegionNDMap providing the fitting energy range."""
+        if self._is_grouped:
+            return self.grouped.mask_fit
+
+    @mask_fit.setter
+    def mask_fit(self, mask_fit):
+        """RegionNDMap providing the fitting energy range."""
+        if self._is_grouped:
+            self.grouped.mask_fit = mask_fit.resample_axis(
+                axis=self.grouping_axis, ufunc=np.logical_or
+            )
 
     def npred(self):
         """Predicted source and background counts
@@ -91,17 +108,6 @@ class StandardOGIPDataset(SpectrumDatasetOnOff):
             Total predicted counts
         """
         return self.grouped.npred()
-
-    def npred_background(self):
-        """Predicted background counts
-        The predicted background counts depend on the parameters
-        of the `FoVBackgroundModel` defined in the dataset.
-        Returns
-        -------
-        npred_background : `Map`
-            Predicted counts from the background.
-        """
-        return self.grouped.npred_background()
 
     def npred_signal(self, model_name=None):
         """ "Model predicted signal counts.
@@ -132,7 +138,7 @@ class StandardOGIPDataset(SpectrumDatasetOnOff):
         kwargs_residuals=None,
     ):
         self.grouped.plot_fit(
-           ax_spectrum, ax_residuals, kwargs_spectrum, kwargs_residuals
+            ax_spectrum, ax_residuals, kwargs_spectrum, kwargs_residuals
         )
 
     def plot_residuals_spectral(self, ax=None, method="diff", region=None, **kwargs):
@@ -154,7 +160,9 @@ class StandardOGIPDataset(SpectrumDatasetOnOff):
         ax : `~matplotlib.axes.Axes`
             Axes object.
         """
-        return self.grouped.plot_residuals_spectral(ax=ax, method=method, region=region, **kwargs)
+        return self.grouped.plot_residuals_spectral(
+            ax=ax, method=method, region=region, **kwargs
+        )
 
     @classmethod
     def read(cls, filename):
