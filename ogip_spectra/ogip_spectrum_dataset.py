@@ -84,7 +84,7 @@ class StandardOGIPDataset(SpectrumDatasetOnOff):
     def models(self, models):
         """Models setter"""
         if self._is_grouped:
-            SpectrumDatasetOnOff.models.fset(self.grouped, models)
+            self.grouped.models = models
 
     @property
     def mask_fit(self):
