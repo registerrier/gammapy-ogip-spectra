@@ -4,6 +4,7 @@ from gammapy.datasets import SpectrumDatasetOnOff
 
 __all__ = ["StandardOGIPDataset"]
 
+
 class StandardOGIPDataset(SpectrumDatasetOnOff):
     """Dataset containing spectral data as defined by X-ray OGIP compliant files.
 
@@ -67,9 +68,7 @@ class StandardOGIPDataset(SpectrumDatasetOnOff):
     def apply_grouping(self, axis=None):
         """Apply grouping."""
         if axis is None:
-            raise ValueError(
-                "A grouping MapAxis must be provided."
-            )
+            raise ValueError("A grouping MapAxis must be provided.")
         else:
             dataset = self.to_spectrum_dataset()
             self._grouped = dataset.resample_energy_axis(

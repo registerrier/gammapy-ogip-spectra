@@ -11,15 +11,20 @@ from gammapy.datasets import Datasets
 
 from ..ogip_spectrum_dataset import StandardOGIPDataset
 
+
 @pytest.fixture()
 def simple_geom():
     ener = np.linspace(0.1, 10, 51) * u.keV
     energy = MapAxis.from_edges(ener, name="energy", interp="lin")
     return RegionGeom.create(region=None, axes=[energy])
 
+
 @pytest.fixture()
 def ogip_dataset():
-    return StandardOGIPDataset.read(filename="/home/lucagiunti/gammapy-ogip-spectra/example_files/xmm/PN_PWN.grp")
+    return StandardOGIPDataset.read(
+        filename="/home/lucagiunti/gammapy-ogip-spectra/example_files/xmm/PN_PWN.grp"
+    )
+
 
 def test_create(simple_geom):
     counts = Map.from_geom(simple_geom)
@@ -34,22 +39,26 @@ def test_create(simple_geom):
     grouping_axis = simple_geom.axes[0].downsample(2)
 
     dataset = StandardOGIPDataset(
-                        counts=counts,
-                        counts_off=counts_off,
-                        acceptance=acceptance,
-                        acceptance_off=acceptance_off,
-                        grouping_axis=grouping_axis
-                        )
+        counts=counts,
+        counts_off=counts_off,
+        acceptance=acceptance,
+        acceptance_off=acceptance_off,
+        grouping_axis=grouping_axis,
+    )
 
     assert dataset.grouping_axis.nbin == 25
+
 
 def test_read(ogip_dataset):
     assert ogip_dataset.counts.data.sum() == 3316
     assert ogip_dataset.counts_off.data.sum() == 2879
-    assert np.all(ogip_dataset.grouped.counts.data[:30]>=25)
+    assert np.all(ogip_dataset.grouped.counts.data[:30] >= 25)
+
 
 def test_fit(ogip_dataset):
-    spectral_model = PowerLawSpectralModel(reference="1 keV", amplitude="1e-3 cm-2s-1 keV-1")
+    spectral_model = PowerLawSpectralModel(
+        reference="1 keV", amplitude="1e-3 cm-2s-1 keV-1"
+    )
     model = SkyModel(spectral_model=spectral_model)
 
     # To test the mask_fit handling, but also to avoid low-energy bins where absorption is relevant
