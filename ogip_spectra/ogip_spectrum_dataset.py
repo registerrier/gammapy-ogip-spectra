@@ -2,6 +2,9 @@
 import numpy as np
 from gammapy.datasets import SpectrumDatasetOnOff
 
+__all__ = ["StandardOGIPDataset"]
+
+
 class StandardOGIPDataset(SpectrumDatasetOnOff):
     """Dataset containing spectral data as defined by X-ray OGIP compliant files.
 
@@ -42,43 +45,124 @@ class StandardOGIPDataset(SpectrumDatasetOnOff):
         Name of the dataset.
 
     """
+
     stat_type = "wstat"
     tag = "StandardOGIPDataset"
 
-    def __init__(
-        self,
-        *args,
-        **kwargs
-    ):
-        axis = kwargs.pop("grouping_axis",None)
+    def __init__(self, *args, **kwargs):
+        self._grouped = None
+        axis = kwargs.pop("grouping_axis", None)
         super().__init__(*args, **kwargs)
-        self._grouped_dataset = None
         self.grouping_axis = axis
-
-    @property
-    def grouping_axis(self):
-        """Energy axis providing energy grouping for stat calculations."""
-        return self._grouping_axis
-
-    @grouping_axis.setter
-    def grouping_axis(self, axis):
-        """Energy axis providing energy grouping for stat calculations."""
-        self._grouping_axis = axis
-        if axis is not None:
-            self._apply_grouping()
-
-    def _apply_grouping(self):
-        """Apply grouping."""
-        self._grouped_dataset = self.resample_energy_axis(self.grouping_axis, name=f"group_{self.name}")
+        self.apply_grouping(self.grouping_axis)
 
     @property
     def grouped(self):
-        """Return grouped dataset."""
-        return self._grouped_dataset
+        """Return grouped SpectrumDatasetOnOff."""
+        return self._grouped
+
+    @property
+    def _is_grouped(self):
+        return self.grouped is not None
+
+    def apply_grouping(self, axis=None):
+        """Apply grouping."""
+        if axis is None:
+            raise ValueError("A grouping MapAxis must be provided.")
+        else:
+            dataset = self.to_spectrum_dataset()
+            self._grouped = dataset.resample_energy_axis(
+                axis, name=f"group_{self.name}"
+            )
+
+    @property
+    def models(self):
+        """Models (`~gammapy.modeling.models.Models`)."""
+        return self.grouped._models
+
+    @models.setter
+    def models(self, models):
+        """Models setter"""
+        if self._is_grouped:
+            self.grouped.models = models
+
+    @property
+    def mask_fit(self):
+        """RegionNDMap providing the fitting energy range."""
+        if self._is_grouped:
+            return self.grouped.mask_fit
+
+    @mask_fit.setter
+    def mask_fit(self, mask_fit):
+        """RegionNDMap providing the fitting energy range."""
+        if self._is_grouped:
+            self.grouped.mask_fit = mask_fit.resample_axis(
+                axis=self.grouping_axis, ufunc=np.logical_or
+            )
+
+    def npred(self):
+        """Predicted source and background counts
+        Returns
+        -------
+        npred : `Map`
+            Total predicted counts
+        """
+        return self.grouped.npred()
+
+    def npred_signal(self, model_name=None):
+        """ "Model predicted signal counts.
+        If a model is passed, predicted counts from that component is returned.
+        Else, the total signal counts are returned.
+        Parameters
+        -------------
+        model_name: str
+            Name of  SkyModel for which to compute the npred for.
+            If none, the sum of all components (minus the background model)
+            is returned
+        Returns
+        ----------
+        npred_sig: `gammapy.maps.Map`
+            Map of the predicted signal counts
+        """
+        return self.grouped.npred_signal(model_name=model_name)
 
     def stat_sum(self):
         """Total statistic given the current model parameters."""
         return self.grouped.stat_sum()
+
+    def plot_fit(
+        self,
+        ax_spectrum=None,
+        ax_residuals=None,
+        kwargs_spectrum=None,
+        kwargs_residuals=None,
+    ):
+        self.grouped.plot_fit(
+            ax_spectrum, ax_residuals, kwargs_spectrum, kwargs_residuals
+        )
+
+    def plot_residuals_spectral(self, ax=None, method="diff", region=None, **kwargs):
+        """Plot spectral residuals.
+        The residuals are extracted from the provided region, and the normalization
+        used for its computation can be controlled using the method parameter.
+        Parameters
+        ----------
+        ax : `~matplotlib.axes.Axes`
+            Axes to plot on.
+        method : {"diff", "diff/sqrt(model)"}
+            Normalization used to compute the residuals, see `SpectrumDataset.residuals`.
+        region: `~regions.SkyRegion` (required)
+            Target sky region.
+        **kwargs : dict
+            Keyword arguments passed to `~matplotlib.axes.Axes.errorbar`.
+        Returns
+        -------
+        ax : `~matplotlib.axes.Axes`
+            Axes object.
+        """
+        return self.grouped.plot_residuals_spectral(
+            ax=ax, method=method, region=region, **kwargs
+        )
 
     @classmethod
     def read(cls, filename):
@@ -94,11 +178,10 @@ class StandardOGIPDataset(SpectrumDatasetOnOff):
         filename : `~pathlib.Path` or str
             OGIP PHA file to read
         """
-        from .io import StandardOGIPDatasetReader
+        from .io_ogip import StandardOGIPDatasetReader
 
         reader = StandardOGIPDatasetReader(filename=filename)
         return reader.read()
 
     def write(self, filename, overwrite=False, format="ogip"):
         raise NotImplementedError("Standard OGIP writing is not supported.")
-
