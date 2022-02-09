@@ -2,6 +2,7 @@
 import numpy as np
 from gammapy.datasets import SpectrumDatasetOnOff
 
+__all__ = ["StandardOGIPDataset"]
 
 class StandardOGIPDataset(SpectrumDatasetOnOff):
     """Dataset containing spectral data as defined by X-ray OGIP compliant files.
@@ -178,7 +179,7 @@ class StandardOGIPDataset(SpectrumDatasetOnOff):
         filename : `~pathlib.Path` or str
             OGIP PHA file to read
         """
-        from io_ogip import StandardOGIPDatasetReader
+        from .io_ogip import StandardOGIPDatasetReader
 
         reader = StandardOGIPDatasetReader(filename=filename)
         return reader.read()

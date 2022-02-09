@@ -7,8 +7,11 @@ from regions import FITSRegionParser
 from gammapy.utils.scripts import make_path
 from gammapy.maps import RegionNDMap, MapAxis, RegionGeom, WcsGeom
 from gammapy.irf import EDispKernel, EDispKernelMap
-from ogip_spectrum_dataset import StandardOGIPDataset
+from .ogip_spectrum_dataset import StandardOGIPDataset
 from gammapy.data import GTI
+
+__all__ = ["StandardOGIPDatasetReader"]
+
 
 @classmethod
 def from_hdulist(cls, hdulist, hdu1="MATRIX", hdu2="EBOUNDS"):
