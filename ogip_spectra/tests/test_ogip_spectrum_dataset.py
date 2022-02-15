@@ -22,7 +22,7 @@ def simple_geom():
 @pytest.fixture()
 def ogip_dataset():
     return StandardOGIPDataset.read(
-        filename="/home/lucagiunti/gammapy-ogip-spectra/example_files/xmm/PN_PWN.grp"
+        filename="/home/lucagiunti/gammapy-ogip-spectra/XMM_test_files/PN_PWN.grp"
     )
 
 
@@ -50,9 +50,10 @@ def test_create(simple_geom):
 
 
 def test_read(ogip_dataset):
-    assert ogip_dataset.counts.data.sum() == 3316
-    assert ogip_dataset.counts_off.data.sum() == 2879
-    assert np.all(ogip_dataset.grouped.counts.data[:30] >= 25)
+    assert ogip_dataset.counts.data.sum() == 789
+    assert ogip_dataset.counts_off.data.sum() == 421
+    print(ogip_dataset.grouped.counts.data)
+    assert np.all(ogip_dataset.grouped.counts.data[:38] >= 20)
 
 
 def test_fit(ogip_dataset):
@@ -72,7 +73,7 @@ def test_fit(ogip_dataset):
     fit_result = fit.run(datasets)
 
     assert fit_result.success is True
-    assert_allclose(fit_result.total_stat, -3245.581034475033)
+    assert_allclose(fit_result.total_stat, -794.9787492685413)
     parameters = fit_result.parameters
-    assert_allclose(parameters["amplitude"].value, 2.1493926557753e-04)
-    assert_allclose(parameters["index"].error, 4.1872962031e-01)
+    assert_allclose(parameters["amplitude"].value, 0.003992296953446386)
+    assert_allclose(parameters["index"].error, 0.822836108835805)

@@ -4,7 +4,7 @@ from astropy.table import Table
 import astropy.units as u
 from regions import FITSRegionParser
 
-from gammapy.utils.scripts import make_path
+from gammapy.utils.scripts import make_path, make_name
 from gammapy.maps import RegionNDMap, MapAxis, RegionGeom, WcsGeom
 from gammapy.irf import EDispKernel, EDispKernelMap
 from .ogip_spectrum_dataset import StandardOGIPDataset
@@ -219,7 +219,7 @@ class StandardOGIPDatasetReader:
 
         return spectrum_data
 
-    def read(self, filenames=None):
+    def read(self, filenames=None, name=None):
         hdulist = fits.open(self.filename, memmap=False)
         pha_table = Table.read(hdulist["spectrum"])
 
@@ -257,8 +257,9 @@ class StandardOGIPDatasetReader:
         edges = np.append(energy_axis.edges[index], energy_axis.edges[-1])
         grouping_axis = MapAxis.from_energy_edges(edges, interp=energy_axis._interp)
 
+        name = make_name(name)
         dataset = StandardOGIPDataset(
-            name="test",
+            name=name,
             counts=counts,
             acceptance=acceptance,
             counts_off=counts_off,
