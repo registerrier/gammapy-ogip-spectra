@@ -7,7 +7,7 @@ import astropy.units as u
 from gammapy.maps import Map, RegionGeom, MapAxis
 from gammapy.modeling.models import PowerLawSpectralModel, SkyModel
 from gammapy.modeling import Fit
-from gammapy.datasets import Datasets
+from gammapy.datasets import Datasets, SpectrumDatasetOnOff
 
 from ..ogip_spectrum_dataset import StandardOGIPDataset
 
@@ -73,7 +73,13 @@ def test_fit(ogip_dataset):
     fit_result = fit.run(datasets)
 
     assert fit_result.success is True
-    assert_allclose(fit_result.total_stat, -794.9787492685413)
+    assert_allclose(fit_result.total_stat, 10.35472002916731)
     parameters = fit_result.parameters
-    assert_allclose(parameters["amplitude"].value, 0.003992296953446386)
-    assert_allclose(parameters["index"].error, 0.822836108835805)
+    assert_allclose(parameters["amplitude"].value, 0.00795308808102234)
+    assert_allclose(parameters["index"].error, 1.242789971989836)
+
+def test_to_spectrum_dataset_onoff(ogip_dataset):
+    dataset = ogip_dataset.to_spectrum_dataset_onoff()
+
+    assert isinstance(dataset, SpectrumDatasetOnOff)
+    assert_allclose(dataset.background.data.sum(), ogip_dataset.background.data.sum())

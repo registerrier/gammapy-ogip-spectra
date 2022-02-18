@@ -178,7 +178,7 @@ class StandardOGIPDataset(SpectrumDatasetOnOff):
         filename : `~pathlib.Path` or str
             OGIP PHA file to read
         """
-        from io_ogip import StandardOGIPDatasetReader
+        from .io_ogip import StandardOGIPDatasetReader
 
         reader = StandardOGIPDatasetReader(filename=filename)
         return reader.read()
