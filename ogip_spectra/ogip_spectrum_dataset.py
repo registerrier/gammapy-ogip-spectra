@@ -70,7 +70,7 @@ class StandardOGIPDataset(SpectrumDatasetOnOff):
         if axis is None:
             raise ValueError("A grouping MapAxis must be provided.")
         else:
-            dataset = self.to_spectrum_dataset()
+            dataset = self.to_spectrum_dataset_onoff()
             self._grouped = dataset.resample_energy_axis(
                 axis, name=f"group_{self.name}"
             )
@@ -178,10 +178,31 @@ class StandardOGIPDataset(SpectrumDatasetOnOff):
         filename : `~pathlib.Path` or str
             OGIP PHA file to read
         """
-        from .io_ogip import StandardOGIPDatasetReader
+        from io_ogip import StandardOGIPDatasetReader
 
         reader = StandardOGIPDatasetReader(filename=filename)
         return reader.read()
 
     def write(self, filename, overwrite=False, format="ogip"):
         raise NotImplementedError("Standard OGIP writing is not supported.")
+
+    def to_spectrum_dataset_onoff(self, name=None):
+        """convert to spectrum dataset on off by dropping the grouping axis.
+        Parameters
+        ----------
+        name : str
+            Name of the new dataset.
+
+        Returns
+        -------
+        dataset : `SpectrumDatasetOnOff`
+            Spectrum dataset on off.
+        """
+        kwargs = {"name": name}
+
+        kwargs["acceptance"] = self.acceptance
+        kwargs["acceptance_off"] = self.acceptance_off
+        kwargs["counts_off"] =self.counts_off
+        dataset = self.to_spectrum_dataset()
+        return SpectrumDatasetOnOff.from_spectrum_dataset(dataset=dataset, **kwargs)
+

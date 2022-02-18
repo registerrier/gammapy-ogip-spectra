@@ -7,7 +7,7 @@ from regions import FITSRegionParser
 from gammapy.utils.scripts import make_path, make_name
 from gammapy.maps import RegionNDMap, MapAxis, RegionGeom, WcsGeom
 from gammapy.irf import EDispKernel, EDispKernelMap
-from .ogip_spectrum_dataset import StandardOGIPDataset
+from ogip_spectrum_dataset import StandardOGIPDataset
 from gammapy.data import GTI
 
 __all__ = ["StandardOGIPDatasetReader"]
