@@ -202,7 +202,6 @@ class StandardOGIPDataset(SpectrumDatasetOnOff):
 
         kwargs["acceptance"] = self.acceptance
         kwargs["acceptance_off"] = self.acceptance_off
-        kwargs["counts_off"] =self.counts_off
+        kwargs["counts_off"] = self.counts_off
         dataset = self.to_spectrum_dataset()
         return SpectrumDatasetOnOff.from_spectrum_dataset(dataset=dataset, **kwargs)
-

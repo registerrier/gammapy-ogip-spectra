@@ -78,6 +78,7 @@ def test_fit(ogip_dataset):
     assert_allclose(parameters["amplitude"].value, 0.00795308808102234)
     assert_allclose(parameters["index"].error, 1.242789971989836)
 
+
 def test_to_spectrum_dataset_onoff(ogip_dataset):
     dataset = ogip_dataset.to_spectrum_dataset_onoff()
 
