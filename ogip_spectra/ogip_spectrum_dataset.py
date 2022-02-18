@@ -137,7 +137,7 @@ class StandardOGIPDataset(SpectrumDatasetOnOff):
         kwargs_spectrum=None,
         kwargs_residuals=None,
     ):
-        self.grouped.plot_fit(
+        return self.grouped.plot_fit(
             ax_spectrum, ax_residuals, kwargs_spectrum, kwargs_residuals
         )
 
