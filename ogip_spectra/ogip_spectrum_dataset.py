@@ -100,6 +100,11 @@ class StandardOGIPDataset(SpectrumDatasetOnOff):
                 axis=self.grouping_axis, ufunc=np.logical_or
             )
 
+    @property
+    def mask(self):
+        """Combined fit and safe mask"""
+        return self.grouped.mask
+
     def npred(self):
         """Predicted source and background counts
         Returns
@@ -137,9 +142,11 @@ class StandardOGIPDataset(SpectrumDatasetOnOff):
         kwargs_spectrum=None,
         kwargs_residuals=None,
     ):
-        return self.grouped.plot_fit(
+        ax_spectrum, ax_residuals = self.grouped.plot_fit(
             ax_spectrum, ax_residuals, kwargs_spectrum, kwargs_residuals
         )
+
+        return ax_spectrum, ax_residuals
 
     def plot_residuals_spectral(self, ax=None, method="diff", region=None, **kwargs):
         """Plot spectral residuals.
