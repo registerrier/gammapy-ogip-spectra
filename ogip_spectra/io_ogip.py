@@ -212,6 +212,9 @@ class StandardOGIPDatasetReader:
             acceptance = pha_meta["BACKSCAL"]
         spectrum_data["acceptance"] = acceptance
 
+        exposure = pha_meta["EXPOSURE"]
+        spectrum_data["acceptance"] *= exposure
+
         area_scale = 1
         if "AREASCAL" in pha_table.columns:
             area_scale = pha_table["AREASCAL"]

@@ -52,8 +52,9 @@ def test_create(simple_geom):
 def test_read(ogip_dataset):
     assert ogip_dataset.counts.data.sum() == 789
     assert ogip_dataset.counts_off.data.sum() == 421
-    print(ogip_dataset.grouped.counts.data)
     assert np.all(ogip_dataset.grouped.counts.data[:38] >= 20)
+    assert ogip_dataset.acceptance.data.sum() == 192813717526557.38
+    assert ogip_dataset.acceptance_off.data.sum() == 233948121020637.4
 
 
 def test_fit(ogip_dataset):
@@ -73,10 +74,10 @@ def test_fit(ogip_dataset):
     fit_result = fit.run(datasets)
 
     assert fit_result.success is True
-    assert_allclose(fit_result.total_stat, 10.35472002916731)
+    assert_allclose(fit_result.total_stat, 10.351819391138392)
     parameters = fit_result.parameters
-    assert_allclose(parameters["amplitude"].value, 0.00795308808102234)
-    assert_allclose(parameters["index"].error, 1.242789971989836)
+    assert_allclose(parameters["amplitude"].value, 0.008154761422515165)
+    assert_allclose(parameters["index"].error, 1.1534332142030461)
 
 
 def test_to_spectrum_dataset_onoff(ogip_dataset):
