@@ -1,7 +1,8 @@
 import astropy.units as u
 import numpy as np
-from gammapy.modeling.models import SpectralModel, Parameter, Parameters
-from astromodels.functions.function import CompositeFunction
+from gammapy.modeling.models import SpectralModel
+from gammapy.modeling import Parameter, Parameters
+#from astromodels.functions.function import CompositeFunction
 
 
 class XspecSpectralModel(SpectralModel):
