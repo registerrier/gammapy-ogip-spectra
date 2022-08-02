@@ -143,7 +143,7 @@ class StandardOGIPDatasetReader:
         region, wcs = None, None
         if self.region_hdu in hdulist:
             region_table = Table.read(hdulist[self.region_hdu])
-            pix_region = Regions.parse(region_table, format='fits')
+            pix_region = Regions.parse(region_table, format="fits")
             pix_region = pix_region.shapes.to_regions()
             wcs = WcsGeom.from_header(region_table.meta).wcs
 
