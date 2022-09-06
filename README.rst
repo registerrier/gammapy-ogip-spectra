@@ -31,7 +31,7 @@ Optionally, to work in a `Jupyter Lab <https://jupyterlab.readthedocs.io/en/stab
   conda install -c conda-forge jupyterlab
 
 
-Acknowledging or Citing
+Citing
 +++++++++++++++++++++++++++++++++++++++++++++
 
 
@@ -42,11 +42,10 @@ If you use gammapyXray for work/research presented in a publication (whether dir
 .. image:: https://archive.softwareheritage.org/badge/swh:1:dir:02e8a702ef6c9558a9f96d99bf6b9f41b5edcd34/
     :target: TBD
 
-and also quote the related paper
+We encourage you to also include citations to the paper in the main text
+wherever appropriate, using the recommended BibTeX entry:
 
 Bibtex
-
-If you have no specific place in your manuscript to cite the paper,
 
 Contributing Code and Feedback
 +++++++++++++++++++++++++++++++++++++++++++++
