@@ -33,11 +33,20 @@ Optionally, to work in a `Jupyter Lab <https://jupyterlab.readthedocs.io/en/stab
 
 Acknowledging or Citing
 +++++++++++++++++++++++++++++++++++++++++++++
+
+
+If you use gammapyXray for work/research presented in a publication (whether directly, or as a dependency to another package), we ask that you please cite it using the following links
+
 .. image:: https://zenodo.org/badge/DOI/10.5281/zenodo.4701488.svg?style=flat
     :target: TBD
 .. image:: https://archive.softwareheritage.org/badge/swh:1:dir:02e8a702ef6c9558a9f96d99bf6b9f41b5edcd34/
     :target: TBD
-Todo: Add Zenodo
+
+and also quote the related paper
+
+Bibtex
+
+If you have no specific place in your manuscript to cite the paper,
 
 Contributing Code and Feedback
 +++++++++++++++++++++++++++++++++++++++++++++
