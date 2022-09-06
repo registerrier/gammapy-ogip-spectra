@@ -19,8 +19,8 @@ Download the zip / clone the repo: TBD
 
 To set-up the work environment with conda::
 
-  conda create -n gammapyx
-  conda activate gammapyx
+  conda create -n gammapyXray-0.1
+  conda activate gammapyXray-0.1
   conda install -c https://cxc.cfa.harvard.edu/conda/ciao -c conda-forge ciao sherpa
   conda install -c conda-forge gammapy
 
