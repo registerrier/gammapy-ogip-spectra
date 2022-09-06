@@ -1,15 +1,14 @@
 Caveat: this is a work in progress. More details and examples will be added here
 
-Folder name: TBD
+GammapyXray 
 =======
-
 A Python tool for the analysis of Gamma-ray and X-ray data in a unified framework, using physically-motivated spectral models.
 
-The scripts provided in this folder are built on Numpy, Scipy, Astropy, Gammapy, Naima and Sherpa. A software description is provided in the following publication: TBD
+A software description is provided in the following publication: TBD
 
-.. image:: http://img.shields.io/badge/powered%20by-AstroPy-orange.svg?style=flat
-    :target: http://www.astropy.org/
-.. image:: https://anaconda.org/conda-forge/gammapy/badges/installer/conda.svg
+Dependencies
++++++++++++++++++++++++++++++++++++++++++++++
+The scripts provided in this folder are built on Numpy, Scipy, Astropy, Gammapy, Naima, Sherpa and Xspec. 
 
 Installation and Set-up
 +++++++++++++++++++++++++++++++++++++++++++++
