@@ -2,7 +2,7 @@ import numpy as np
 from astropy.io import fits
 from astropy.table import Table
 import astropy.units as u
-from regions import FITSRegionParser
+from regions import Regions
 
 from gammapy.utils.scripts import make_path, make_name
 from gammapy.maps import RegionNDMap, MapAxis, RegionGeom, WcsGeom
@@ -143,9 +143,8 @@ class StandardOGIPDatasetReader:
         region, wcs = None, None
         if self.region_hdu in hdulist:
             region_table = Table.read(hdulist[self.region_hdu])
-
-            parser = FITSRegionParser(region_table)
-            pix_region = parser.shapes.to_regions()
+            pix_region = Regions.parse(region_table, format="fits")
+            pix_region = pix_region.shapes.to_regions()
             wcs = WcsGeom.from_header(region_table.meta).wcs
 
             regions = []
