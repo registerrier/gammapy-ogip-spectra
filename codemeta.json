@@ -1,0 +1,74 @@
+{
+    "@context": "https://doi.org/10.5063/schema/codemeta-2.0",
+    "@type": "SoftwareSourceCode",
+    "license": "https://spdx.org/licenses/BSD-3-Clause",
+    "codeRepository": "https://github.com/registerrier/gammapyXray",
+    "datePublished": "TBD YYYY-MM-DD",
+    "issueTracker": "https://github.com/registerrier/gammapyXray/issues",
+    "name": "gammapyXray",
+    "version": "0.1",
+    "description": "A Python tool for the analysis of Gamma-ray and X-ray data in a unified framework, using physically-motivated spectral models.",
+    "applicationCategory": "Astronomy",
+    "developmentStatus": "active",
+    "isPartOf": "https://gammapy.org/",
+    "referencePublication": "https://TBD",
+    "keywords": [
+        "Astronomy",
+        "High-energy Astrohpysics",
+        "Gamma-ray",
+        "X-ray",
+        "Multi-wavelength",
+        "Multiwavelength",
+        "Gammapy",
+        "Sherpa",
+        "Naima",
+        "Python",
+        "Modeling",
+        "Data analysis"
+    ],
+    "programmingLanguage": [
+        "Python 3"
+    ],
+    "softwareRequirements": [
+        "Anaconda/Miniconda",
+        "Gammapy",
+        "Sherpa"
+    ],
+    "author": [
+        {
+            "@type": "Person",
+            "@id": "https://orcid.org/0000-0002-3395-3647",
+            "givenName": "Luca",
+            "familyName": "Giunti",
+            "email": "giunti@apc.in2p3.fr",
+            "affiliation": {
+                "@type": "Organization",
+                "name": "APC (Paris, CNRS/IN2P3)"
+            }
+        },
+        {
+            "@type": "Person",
+            "@id": "https://orcid.org/0000-0002-8219-4667",
+            "givenName": "Regis",
+            "familyName": "Terrier",
+            "email": "rterrier@apc.in2p3.fr",
+            "affiliation": {
+                "@type": "Organization",
+                "name": "APC (Paris, CNRS/IN2P3)"
+            }
+        }
+    ],
+    "contributor": [
+        {
+            "@type": "Person",
+            "@id": "https://orcid.org/0000-0001-6876-5577",
+            "givenName": "Bruno",
+            "familyName": "Khelifi",
+            "email": "khelifi@apc.in2p3.fr",
+            "affiliation": {
+                "@type": "Organization",
+                "name": "APC (Paris, CNRS/IN2P3)"
+            }
+        }
+    ]
+}
