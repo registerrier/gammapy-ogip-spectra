@@ -3,7 +3,7 @@ Caveat: this is a work in progress
 Folder name: TBD
 =======
 
-A Python tool for the analysis of Gamma-ray and X-ray data in a unified framework.
+A Python tool for the analysis of Gamma-ray and X-ray data in a unified framework, using physically-motivated spectral models.
 
 The scripts provided in this folder are built on Numpy, Scipy, Astropy, Gammapy, Naima and Sherpa. A software description is provided in the following publication: TBD
 
