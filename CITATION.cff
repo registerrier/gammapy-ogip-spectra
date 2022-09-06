@@ -1,0 +1,34 @@
+# This CITATION.cff file was generated with cffinit.
+# Visit https://bit.ly/cffinit to generate yours today!
+
+cff-version: 1.2.0
+title: gammapyXray
+message: >-
+  If you use this software, please cite it using the
+  metadata from this file.
+type: software
+authors:
+  - given-names: Luca
+    family-names: Giunti
+    email: giunti@apc.in2p3.fr
+    affiliation: 'APC (Paris, CNRS/IN2P3)'
+    orcid: 'https://orcid.org/0000-0002-3395-3647'
+  - given-names: Regis
+    family-names: Terrier
+    email: rterrier@apc.in2p3.fr
+    affiliation: 'APC (Paris, CNRS/IN2P3)'
+    orcid: 'https://orcid.org/0000-0002-8219-4667'
+identifiers:
+  - type: doi
+    value: TBD
+    description: Zenodo
+  - type: swh
+    value: TBD
+    description: Software Heritage
+  - type: doi
+    value: TBD
+    description: Related paper
+abstract: TBD
+keywords:
+  - ''
+license: BSD-3-Clause
