@@ -1,4 +1,4 @@
-Caveat: this is a work in progress
+Caveat: this is a work in progress. More details and examples will be added here
 
 Folder name: TBD
 =======
@@ -24,8 +24,10 @@ To set-up the work environment with conda::
   conda install -c https://cxc.cfa.harvard.edu/conda/ciao -c conda-forge ciao sherpa
   conda install -c conda-forge gammapy
 
-Optional::
+Additionally, if you wish to combine the absorption models provided in Sherpa with the physical models provided by Naima, you have to `install Naima <https://naima.readthedocs.io/en/latest/installation.html>`_. TBD: show how this is done!
 
+Optionally, to work in a `Jupyter Lab <https://jupyterlab.readthedocs.io/en/stable/>`_ notebook::
+  
   conda install -c conda-forge jupyterlab
 
 
